@@ -7,6 +7,7 @@
 
 #define TOTAL_BLOCKS (10*1024)
 
+//using this to add inodes and raw data
 static unsigned char rawdata[TOTAL_BLOCKS*BLOCK_SZ];
 static char bitmap[TOTAL_BLOCKS];
 
