@@ -4,9 +4,15 @@
 
 
 int main(int argc, char *argv[]){
+    
+    //char img_file[] = argv[3];
     int n = argv[5];
     int m = argv[7];
+    //char fil[] = argv[9];
+    int uid = argv[11];
+    int gid = argv[13];
     int d = argv[15];
+    int i = argv[17];
 
     if (m > n)
         printf("%s \n", 
