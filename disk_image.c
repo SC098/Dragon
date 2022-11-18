@@ -1,4 +1,5 @@
 #include "inode.h"
+#include "skeleton.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -56,6 +57,23 @@ int main(int argc, char *argv[]){
     //placed in block D (counting from 0) within the disk image
     IMAGE_FILE[d] = new_node;
     //at position I (counting from 0) within that block
+
+    for (int i = 0; i < m ; ++i){
+        struct inode *new_node
+        rawdata[i] = new_node;
+    }
+
+    //see if we need to use memset to turn set all of the relevent data to 0. 
+
+    //finding the 
+    uint64_t start_addr = (1024 * d) + &rawdata;
+    //i think (i * 1024) is wrong. 
+    inode *i = &rawdata[start_addr];
+    //finds the file size
+    int size = i->size;
+    //finds the file we are trying to find
+    uint64_t real_start = start_addt + (i *  size);
+
 
     
 
