@@ -1,0 +1,309 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 3.82
+# Built for x86_64-redhat-linux-gnu
+# Copyright (C) 2010  Free Software Foundation, Inc.
+# License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+# This is free software: you are free to change and redistribute it.
+# There is NO WARRANTY, to the extent permitted by law.
+ 
+
+# Make data base, printed on Mon Nov 28 13:57:16 2022
+
+# Variables
+
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# automatic
+?F = $(notdir $?)
+# default
+.SHELLFLAGS := -c
+# environment
+VSCODE_AGENT_FOLDER = /u/sc3xry/.vscode-server
+# environment
+MODULEPATH = /sw/centos/Modules/modulefiles
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# automatic
+@F = $(notdir $@)
+# default
+MAKE_VERSION := 3.82
+# makefile
+CURDIR := /u/sc3xry/Dragon/Dragon
+# makefile
+SHELL = /bin/sh
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en","availableLanguages":{}}
+# environment
+_ = /usr/bin/make
+# makefile (from `Makefile', line 1)
+MAKEFILE_LIST :=  Makefile
+# environment
+HISTCONTROL = ignoredups
+# makefile (from `Makefile', line 3)
+CXXFLAGS = -Wall -gcc
+# environment
+define BASH_FUNC_ml()
+() {  module ml "$@"
+}
+endef
+# environment
+LESSOPEN = ||/usr/bin/lesspipe.sh %s
+# environment
+VSCODE_CWD = /u/sc3xry
+# environment
+KRB5CCNAME = KEYRING:persistent:2218260
+# environment
+SSH_CONNECTION = 172.25.145.56 59090 128.143.69.116 22
+# environment
+PATH = /u/sc3xry/.vscode-server/bin/6261075646f055b99068d3688932416f2346dd3b/bin/remote-cli:/sw/centos/slurm/current/bin:/sw/centos-7.4/Modules/5.0.1/bin:/usr/local/bin:/usr/bin:/opt/puppetlabs/bin:/usr/local/sbin:/usr/sbin:/u/sc3xry/bin
+# environment
+XDG_RUNTIME_DIR = /run/user/2218260
+# environment
+MODULES_CMD = /sw/centos-7.4/Modules/5.0.1/libexec/modulecmd.tcl
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# default
+.FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver check-symlink
+# automatic
+%F = $(notdir $%)
+# environment
+SLURM_CONF = /etc/slurm/slurm.conf
+# environment
+PWD = /u/sc3xry/Dragon/Dragon
+# environment
+VSCODE_IPC_HOOK_CLI = /run/user/2218260/vscode-ipc-68278ee8-4e61-440d-9f00-5e95214527d5.sock
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+MANPATH = :/opt/puppetlabs/puppet/share/man
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+HOME = /u/sc3xry
+# environment
+MODULESHOME = /sw/centos-7.4/Modules/5.0.1
+# environment
+LOGNAME = sc3xry
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# automatic
++F = $(notdir $+)
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# environment
+HOSTNAME = portal06
+# environment
+MAKELEVEL := 0
+# default
+MAKE = $(MAKE_COMMAND)
+# default
+MAKECMDGOALS := all
+# environment
+SHLVL = 5
+# makefile (from `Makefile', line 4)
+AS = nasm
+# environment
+XDG_SESSION_ID = 67080
+# environment
+USER = sc3xry
+# makefile
+.DEFAULT_GOAL := all
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# environment
+define BASH_FUNC_module()
+() {  eval `/usr/bin/tclsh /sw/centos-7.4/Modules/5.0.1/libexec/modulecmd.tcl bash "$@"`;
+ _mlstatus=$?;
+ return $_mlstatus
+}
+endef
+# default
+MAKE_COMMAND := make
+# default
+.VARIABLES := 
+# environment
+CVS_RSH = ssh
+# automatic
+*F = $(notdir $*)
+# makefile
+MAKEFLAGS = Rrqp
+# environment
+MFLAGS = -Rrqp
+# environment
+SSH_CLIENT = 172.25.145.56 59090 22
+# environment
+MAIL = /var/spool/mail/sc3xry
+# environment
+LOADEDMODULES = slurm-client
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# environment
+BROWSER = /u/sc3xry/.vscode-server/bin/6261075646f055b99068d3688932416f2346dd3b/bin/helpers/browser.sh
+# environment
+VSCODE_HANDLES_SIGPIPE = true
+# default
+MAKEFILES := 
+# automatic
+<F = $(notdir $<)
+# environment
+_LMFILES_ = /sw/centos/Modules/modulefiles/slurm-client
+# makefile (from `Makefile', line 2)
+CXX = gcc
+# makefile (from `Makefile', line 22)
+SUBMIT_FILENAME = xv6-submission-$(shell date +%Y%m%d%H%M%S).tar.gz
+# environment
+LC_ALL = C
+# automatic
+^F = $(notdir $^)
+# default
+SUFFIXES := 
+# environment
+HISTSIZE = 1000
+# default
+.INCLUDE_DIRS = /usr/include /usr/local/include /usr/include
+# default
+.RECIPEPREFIX := 
+# makefile (from `Makefile', line 6)
+OBJECTS = disk_image.o fs_skeleton.o 
+# makefile (from `Makefile', line 5)
+ASFlags = -f elf64 -g
+# environment
+LANG = C
+# variable set hash-table stats:
+# Load=77/1024=8%, Rehash=0, Collisions=7/99=7%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# . (device 51, inode 202616465): 9 files, no impossibilities.
+
+# 9 files, no impossibilities in 1 directories.
+
+# Implicit Rules
+
+# No implicit rules.
+
+# Files
+
+# Not a target:
+1:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+all: disk_image.o fs_skeleton.o
+#  Command line target.
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  recipe to execute (from `Makefile', line 10):
+		gcc -g -Wall -o make_dragon *.c
+
+.PHONY: clean dist-test dist
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2022-11-17 16:48:48.752786469
+#  File has been updated.
+#  Successfully updated.
+
+submit:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from `Makefile', line 25):
+	@tar -zcf $(SUBMIT_FILENAME) *.c *.h *.S *.ld Makefile $(wildcard *.txt) $(wildcard *.md) $(EXTRA) $(FILES)
+	@echo "Created $(SUBMIT_FILENAME); please upload and submit this file."
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+dist-test:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+clean:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  recipe to execute (from `Makefile', line 13):
+	-rm -f *.o
+
+tar:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from `Makefile', line 17):
+	rm -rf /tmp/xv6
+	mkdir -p /tmp/xv6
+	cp dist/* dist/.gdbinit.tmpl /tmp/xv6
+	(cd /tmp; tar cf - xv6) | gzip >xv6-rev10-uva1.tar.gz  
+
+dist:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+.DELETE_ON_ERROR: 1
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+fs_skeleton.o:
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has not been updated.
+
+# Not a target:
+disk_image.o:
+#  Implicit rule search has been done.
+ 
+make: *** No rule to make target `fs_skeleton.o', needed by `all'.  Stop.
+
+#  Last modified 2022-11-17 18:01:39.177633948
+#  File has been updated.
+#  Successfully updated.
+
+# files hash-table stats:
+# Load=14/1024=1%, Rehash=0, Collisions=0/33=0%
+# VPATH Search Paths
+
+# No `vpath' search paths.
+
+# No general (`VPATH' variable) search path.
+
+# # of strings in strcache: 0 / lookups = 38 / hits = 38
+# # of strcache buffers: 1 (* 8176 B/buffer = 8176 B)
+# strcache used: total = 0 (202) / max = 0 / min = 8176 / avg = 0
+# strcache free: total = 0 (7974) / max = 0 / min = 8176 / avg = 0
+
+# strcache hash-table stats:
+# Load=23/8192=0%, Rehash=0, Collisions=1/38=3%
+# Finished Make data base on Mon Nov 28 13:57:16 2022
+
+ 
