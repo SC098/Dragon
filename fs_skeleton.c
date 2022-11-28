@@ -13,10 +13,17 @@ static char bitmap[TOTAL_BLOCKS];
 
 int get_free_block()
 {
-  // fill in here
-  assert(blockno < TOTAL_BLOCKS);
-  assert(bitmap[blockno]);
-  return blockno;
+  int i;
+  int free_block = -1;
+  for (i = 0; i < TOTAL_BLOCKS*BLOCK_SZ; ++i){
+    if (rawdata[i] == NULL){
+      free_block = i;
+      break;
+    }
+  }
+  assert(free_block < TOTAL_BLOCKS);
+  assert(bitmap[free_block]);
+  return free_block;
 }
 
 void write_int(int pos, int val)

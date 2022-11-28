@@ -6,7 +6,7 @@
 #include <stdint.h>
 
 
-int main(int argc, char *argv[]){
+int do_this(int argc, char *argv[]){
     if(argc!=18){
         printf("%s \n", 
             "Incorrect number of, this program will not work correctly."
