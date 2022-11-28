@@ -65,7 +65,7 @@ void main() // add argument handling
   int i;
   FILE *outfile;
 
-  outfile = fopen(output_filename, "wb");
+  outfile = fopen(outfile, "wb");
   if (!outfile) {
     perror("datafile open");
     exit(-1);
