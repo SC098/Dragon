@@ -3,10 +3,10 @@ CXX=gcc
 CXXFLAGS=-Wall -gcc
 AS=nasm
 ASFlags = -f elf64 -g
-OBJECTS=disk_image.o fs_skeleton.o 
+OBJECTS=fs_skeleton.o 
 
 
-all: disk_image.o fs_skeleton.o 
+all: fs_skeleton.o 
 		gcc -g -Wall -o make_dragon *.c
 .PHONY: clean
 clean:
