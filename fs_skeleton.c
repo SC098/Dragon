@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <strings.h>
 #include <errno.h>
+#include <stdint.h>
 #include <assert.h>
 #include "inode.h"
 
@@ -67,7 +68,7 @@ void place_file(char *file, int uid, int gid)
   printf("successfully wrote %d bytes of file %s\n", nbytes, file);
 }
 
-void helper1(int argc, char *argv[]){
+void create(int argc, FILE *files, const char *argv[]){
   
   if(argc!=18){
       printf("%s \n", 
@@ -100,17 +101,21 @@ void helper1(int argc, char *argv[]){
       );
       return;
   }
+
   //check if I will fit in one block
+  int iv;
+  FILE *outfile;
+  
 
 
 
   // produce a disk image IMAGE_FILE of N total blocks of size 1024 bytes
   //(Disk image is an array of inodes (size N))
+
   struct inode IMAGE_FILE[n];
   //including the first M blocks which will be used for inodes, sets all the contents to zero
   //(size 1024 bytes)
-  int iv;
-  for (iv = 0; iv < m; ++i){
+  for (iv = 0; iv < m; ++iv){
       memset(&IMAGE_FILE[iv], 0, 1024);
   }
   //make a new node
@@ -125,6 +130,7 @@ void helper1(int argc, char *argv[]){
       struct inode *new_node;
       rawdata[iv] = new_node;
   }
+
 
   //see if we need to use memset to turn set all of the relevent data to 0. 
 
@@ -145,8 +151,9 @@ void main(int argc, char *argv[]) // add argument handling
 {
   int i;
   FILE *outfile;
+  
 
-  outfile = fopen(output_filename, "wb");
+  outfile = fopen(argv[3], "wb");
   if (!outfile) {
     perror("datafile open");
     exit(-1);
@@ -155,11 +162,7 @@ void main(int argc, char *argv[]) // add argument handling
   // fill in here to place file 
 
 
-  i = fwrite(rawdata, 1, TOTAL_BLOCKS*BLOCK_SZ, outfile);
-  if (i != TOTAL_BLOCKS*BLOCK_SZ) {
-    perror("fwrite");
-    exit(-1);
-  }
+  
 
   i = fclose(outfile);
   if (i) {
@@ -168,5 +171,4 @@ void main(int argc, char *argv[]) // add argument handling
   }
 
   printf("Done.\n");
-  return;
 }
