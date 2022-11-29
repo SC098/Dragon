@@ -136,7 +136,7 @@ struct inode * create(int argc, FILE *files, const char *argv[]){
   //finding the start address of the inode d
   uint64_t start_addr = (1024 * d) + &rawdata;
   //i think (i * 1024) is wrong. 
-  struct inode * inode = &rawdata[start_addr];
+  struct inode * inode = &start_addr;
 
   inode->uid = uid;
   inode->gid = gid;
@@ -168,12 +168,35 @@ void main(int argc, char *argv[]) // add argument handling
     int size = file_location->size;
   //finds the file we are trying to find
     uint64_t start_addr = (1024 * atoi(argv[15])) + &rawdata;
-    uint64_t real_start = start_addr + (i *  size);
-    FILE *file_to_write;
-    file_to_write = fopen(argv[9], 'r');
-    file_location->dblocks[atoi(argv[15])];
+    char *file_to_write[] =argv[9];
 
-    for (i = 0; i < a
+    char c = &file_to_write[0];
+    int byte; 
+
+    //keeps track of the char we are currently at
+    for (i =0; i < 12 || c != '\0'; ++i){
+      void *block = file_location->dblocks[i];
+      for (byte = 0; byte < 1024 || c != '\0'; ++byte){
+            block = c;
+            block += 4;
+            c = &file_to_write[byte + 1];
+      }
+    }
+
+    int j;
+    for (i = 0; i < 3 || c != '\0'; ++i){
+      void* block = file_location->iblocks[i];
+      for (j =0; j < 12 || c != '\0'; ++j){
+        block = c;
+        block += 4;
+        c = &file_to_write[i + 1];
+      }
+    }
+
+    int k;
+
+
+
 
 
 
