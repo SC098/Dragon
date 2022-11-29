@@ -55,14 +55,61 @@ void place_file(char *file, int uid, int gid)
     exit(-1);
   }
 
+  
+  char c;
+  int j;
+
   for (i = 0; i < N_DBLOCKS; i++) {
-    int blockno = get_free_block();
-    ip->dblocks[i] = blockno;
-    // fill in here
+    int * blockno = get_free_block();
+    for (j=0; j<BLOCK_SZ; ++j){
+      if ((c = fgetc(fpr)) != '\0'){
+        *blockno = c;
+        blockno += 0x1;
+      }
+      else{
+        break;
+      }
+    }
   }
 
-  // fill in here if IBLOCKS needed
-  // if so, you will first need to get an empty block to use for your IBLOCK
+  
+  for (i = 0; i < N_IBLOCKS; ++i){
+    //creates the indirect block
+    ip->iblocks[i] = get_free_block();
+    //fills the indirect block with  data blocks
+    for (j = 0; j < BLOCK_SZ; ++j){
+      //gets a data block
+      int blockno = get_free_block();
+      //puts the data block into the indirect block;
+      void * ptr = ip->iblocks[i];
+      ptr = blockno;
+    }
+    
+    
+    // fill in here
+
+
+    //grabs the location of iblock to modify
+    char* ch = ip->iblocks[i];
+    char c;
+    //checks to see if we have any chars to put in
+    for (j=0; j<BLOCK_SZ; ++j){
+      if ((c = fgetc(fpr)) != '\0'){
+        //assigns one character of the file into the data block
+        *ch = c;
+        //goes to the next byte
+        ch += 0x1;
+      }
+      else{
+        break;
+      }
+    }
+  }
+  //double_indirect_block[pointers to other data blocks][pointers to data blocks]
+  int doubly_indirect_block[1024][1024];
+  int triply_indirect_block[1024][1024][1024];
+  int k;
+
 
   ip->size = nbytes;  // total number of data bytes written for file
   printf("successfully wrote %d bytes of file %s\n", nbytes, file);
@@ -174,26 +221,7 @@ void main(int argc, char *argv[]) // add argument handling
     int byte; 
 
     //keeps track of the char we are currently at
-    for (i =0; i < 12 || c != '\0'; ++i){
-      void *block = file_location->dblocks[i];
-      for (byte = 0; byte < 1024 || c != '\0'; ++byte){
-            block = c;
-            block += 4;
-            c = &file_to_write[byte + 1];
-      }
-    }
-
-    int j;
-    for (i = 0; i < 3 || c != '\0'; ++i){
-      void* block = file_location->iblocks[i];
-      for (j =0; j < 12 || c != '\0'; ++j){
-        block = c;
-        block += 4;
-        c = &file_to_write[i + 1];
-      }
-    }
-
-    int k;
+    
 
 
 
