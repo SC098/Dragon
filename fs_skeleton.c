@@ -16,9 +16,10 @@ int get_free_block()
 {
   int i;
   int free_block = -1;
-  for (i = 0; i < TOTAL_BLOCKS*BLOCK_SZ; ++i){
-    if (~rawdata[i]){
+  for (i = 0; i < TOTAL_BLOCKS; ++i){
+    if (~bitmap[i]){
       free_block = i;
+      bitmap[i] = 1;
       break;
     }
   }
@@ -60,11 +61,10 @@ void place_file(char *file, int uid, int gid)
   int j;
 
   for (i = 0; i < N_DBLOCKS; i++) {
-    int * blockno = get_free_block();
-    for (j=0; j<BLOCK_SZ; ++j){
+    int blockno = get_free_block();
+    for (j= (blockno * 1024); j < BLOCK_SZ + (blockno * 1024); ++j){
       if ((c = fgetc(fpr)) != '\0'){
-        *blockno = c;
-        blockno += 0x1;
+        rawdata[j] = c;
       }
       else{
         break;
@@ -72,39 +72,34 @@ void place_file(char *file, int uid, int gid)
     }
   }
 
+  int k;
   
   for (i = 0; i < N_IBLOCKS; ++i){
     //creates the indirect block
-    ip->iblocks[i] = get_free_block();
+    int blockno = get_free_block();
+    ip->iblocks[i] = blockno;
     //fills the indirect block with  data blocks
     for (j = 0; j < BLOCK_SZ; ++j){
       //gets a data block
-      int blockno = get_free_block();
       //puts the data block into the indirect block;
-      void * ptr = ip->iblocks[i];
-      ptr = blockno;
+      int datablock = get_free_block();
+      rawdata[blockno] = get_free_block();
+      for (k= (blockno * 1024); k < BLOCK_SZ + (blockno * 1024); ++k){
+        if ((c = fgetc(fpr)) != '\0'){
+          rawdata[k] = c;
+        }
+        else{
+          break;
+        }
+      }
     }
+  }
     
     
     // fill in here
 
 
-    //grabs the location of iblock to modify
-    char* ch = ip->iblocks[i];
-    char c;
-    //checks to see if we have any chars to put in
-    for (j=0; j<BLOCK_SZ; ++j){
-      if ((c = fgetc(fpr)) != '\0'){
-        //assigns one character of the file into the data block
-        *ch = c;
-        //goes to the next byte
-        ch += 0x1;
-      }
-      else{
-        break;
-      }
-    }
-  }
+   
   //double_indirect_block[pointers to other data blocks][pointers to data blocks]
   int doubly_indirect_block[1024][1024];
   int triply_indirect_block[1024][1024][1024];
