@@ -7,7 +7,7 @@ OBJECTS=fs_skeleton.o
 
 
 all: fs_skeleton.o 
-		gcc -g -Wall -o make_dragon *.c
+		gcc -g -Wall -o disk_image *.c
 .PHONY: clean
 clean:
 	-rm -f *.o

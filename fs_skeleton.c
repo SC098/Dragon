@@ -238,7 +238,7 @@ struct inode * create(int argc, FILE *files, const char *argv[]){
 
   //set inode in dth position in ith inode in rawdata
 
-  rawdata[d*BLOCK_SZ+i] = ip;
+  rawdata[d*BLOCK_SZ+i*sizeof(struct inode)] = ip;
   
 
   return ip;
