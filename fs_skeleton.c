@@ -238,9 +238,9 @@ struct inode * create(int argc, FILE *files, const char *argv[]){
 
   //set inode in dth position in ith inode in rawdata
 
-  rawdata[d*BLOCK_SZ+i*sizeof(struct inode)] = ip;
-  
-
+  //store as char* //warning below
+  memcpy(&rawdata[d*BLOCK_SZ+i*sizeof(struct inode)], ip, sizeof(struct inode));
+  //rawdata[d*BLOCK_SZ+i*sizeof(struct inode)] = ip;
   return ip;
 
 }
@@ -262,23 +262,17 @@ void main(int argc, const char *argv[]) // add argument handling
 
   if (strcmp("-create", argv[1])){
     struct inode *file_location = create(argc, outfile, argv);
-    int size = file_location->size;
-  //finds the file we are trying to find
+    /**
+     int size = file_location->size;
+    //finds the file we are trying to find
     uint64_t start_addr = (1024 * atoi(argv[15])) + &rawdata;
     char *file_to_write = argv[9];
 
     char c = &file_to_write[0];
     int byte; 
 
-    //keeps track of the char we are currently at
-    
-
-
-
-
-
-
-
+    //keeps track of the char we are currently at    
+    **/
   }
 
 
