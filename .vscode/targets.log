@@ -7,7 +7,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # There is NO WARRANTY, to the extent permitted by law.
  
 
-# Make data base, printed on Tue Nov 29 20:35:36 2022
+# Make data base, printed on Wed Nov 30 11:44:52 2022
 
 # Variables
 
@@ -55,7 +55,7 @@ VSCODE_CWD = /u/sc3xry
 # environment
 KRB5CCNAME = KEYRING:persistent:2218260
 # environment
-SSH_CONNECTION = 64.203.139.114 62290 128.143.69.113 22
+SSH_CONNECTION = 172.25.137.46 54743 128.143.69.113 22
 # environment
 PATH = /u/sc3xry/.vscode-server/bin/6261075646f055b99068d3688932416f2346dd3b/bin/remote-cli:/sw/centos/slurm/current/bin:/sw/centos-7.4/Modules/5.0.1/bin:/usr/local/bin:/usr/bin:/opt/puppetlabs/bin:/usr/local/sbin:/usr/sbin:/u/sc3xry/bin
 # environment
@@ -73,7 +73,7 @@ SLURM_CONF = /etc/slurm/slurm.conf
 # environment
 PWD = /u/sc3xry/Dragon/Dragon
 # environment
-VSCODE_IPC_HOOK_CLI = /run/user/2218260/vscode-ipc-6fc9735b-50ba-40dc-b7d8-bdac10e4d7ae.sock
+VSCODE_IPC_HOOK_CLI = /run/user/2218260/vscode-ipc-79b756fb-0a8f-4bdb-987c-421d8d3fa161.sock
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
@@ -107,7 +107,7 @@ SHLVL = 5
 # makefile (from `Makefile', line 4)
 AS = nasm
 # environment
-XDG_SESSION_ID = 161428
+XDG_SESSION_ID = 162423
 # environment
 USER = sc3xry
 # makefile
@@ -134,7 +134,7 @@ MAKEFLAGS = Rrqp
 # environment
 MFLAGS = -Rrqp
 # environment
-SSH_CLIENT = 64.203.139.114 62290 22
+SSH_CLIENT = 172.25.137.46 54743 22
 # environment
 MAIL = /var/spool/mail/sc3xry
 # environment
@@ -289,7 +289,6 @@ dist:
 #  File has not been updated.
 
 .DELETE_ON_ERROR: 1
- 
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -316,6 +315,6 @@ fs_skeleton.o:
 
 # strcache hash-table stats:
 # Load=22/8192=0%, Rehash=0, Collisions=1/38=3%
-# Finished Make data base on Tue Nov 29 20:35:36 2022
+# Finished Make data base on Wed Nov 30 11:44:52 2022
 
  

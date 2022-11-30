@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <strings.h>
+#include <string.h>
 #include <errno.h>
 #include <stdint.h>
 #include <assert.h>
@@ -9,7 +9,8 @@
 #define TOTAL_BLOCKS (10*1024)
 
 //using this to add inodes and raw data
-static unsigned char rawdata[TOTAL_BLOCKS*BLOCK_SZ];
+//static unsigned char rawdata[TOTAL_BLOCKS*BLOCK_SZ];
+unsigned char *rawdata;
 static char bitmap[TOTAL_BLOCKS];
 
 int get_free_block()
@@ -34,11 +35,10 @@ void write_int(int pos, int val)
   *ptr = val;
 }
 
-void place_file(char *file, int uid, int gid)
+void place_file(char *file, int uid, int gid, struct inode *ip, int m)
 {
   int i, nbytes = 0;
   int i2block_index, i3block_index;
-  struct inode *ip;
   FILE *fpr;
   unsigned char buf[BLOCK_SZ];
 
@@ -49,6 +49,8 @@ void place_file(char *file, int uid, int gid)
   ip->ctime = random();
   ip->mtime = random();
   ip->atime = random();
+
+  int blockInc = m*BLOCK_SZ;
 
   fpr = fopen(file, "rb");
   if (!fpr) {
@@ -62,17 +64,13 @@ void place_file(char *file, int uid, int gid)
 
   for (i = 0; i < N_DBLOCKS; i++) {
     int blockno = get_free_block();
-
     ip->dblocks[i] = blockno; //new
-
-    for (j= (blockno * 1024); j < BLOCK_SZ + (blockno * 1024); ++j){
+    for (j= (blockno * BLOCK_SZ); j < BLOCK_SZ + (blockno * BLOCK_SZ); ++j){
       if ((c = fgetc(fpr)) != '\0'){
+        //first m blocks reserved for inodes
         rawdata[j] = c;
       }
       else{
-        break;
-      }
-      if (c = '\0'){
         break;
       }
     }
@@ -80,59 +78,53 @@ void place_file(char *file, int uid, int gid)
 
   int k;
   if (c != '\0'){
-  
-  for (i = 0; i < N_IBLOCKS; ++i){
-    //creates the indirect block
-    int blockno = get_free_block();
-    ip->iblocks[i] = blockno;
-    //fills the indirect block with  data blocks
-    for (j = blockno * BLOCK_SZ; j < BLOCK_SZ + (blockno * 1024); ++j){
-      //gets a data block
-      //puts the data block into the indirect block;
-      int datablock = get_free_block();
+    for (i = 0; i < N_IBLOCKS; ++i){
+      //creates the indirect block
+      int blockno = get_free_block();
+      ip->iblocks[i] = blockno;
+      //fills the indirect block with  data blocks
+      for (j = 0; j < 1024; ++j){
+        //gets a data block
+        //puts the data block into the indirect block;
+        int datablock = get_free_block();
+        int addr = blockno*BLOCK_SZ+j*sizeof(int);
 
-
-      rawdata[blockno] = datablock;
-      for (k= (blockno * 1024); k < BLOCK_SZ + (blockno * 1024); ++k){
-        if ((c = fgetc(fpr)) != '\0'){
-          rawdata[k] = c;
-        }
-        else{
-          break;
+        rawdata[addr] = datablock;
+        for (k= (datablock * BLOCK_SZ); k < BLOCK_SZ + (datablock * BLOCK_SZ); ++k){
+          if ((c = fgetc(fpr)) != '\0'){
+            rawdata[k] = c;
+          }
+          else{
+            break;
+          }
         }
       }
     }
-  }
   }
     
   // fill in here
     
 
 
-   if (c != '\0'){
-  //double_indirect_block[pointers to other data blocks][pointers to data blocks]
-  int double_indirect = get_free_block();
-  ip->i2block = double_indirect;  //warning?
-  int a;
-  for(a = double_indirect * 1024; a < (double_indirect + 1024) + BLOCK_SZ; ++a){
-    //create doubly indirect block
-    int blockduo = get_free_block();
-    rawdata[a] = blockduo;
-    
-    for (i = double_indirect; i < double_indirect + BLOCK_SZ; ++i){
-      //creates the indirect block
-      int blockno = get_free_block();
-      ip->iblocks[i] = blockno;
-      //fills the indirect block with  data blocks
-      for (j = blockno * 1024 ; j < (BLOCK_SZ * blockno) + BLOCK_SZ; ++j){
+  if (c != '\0'){
+    //double_indirect_block[pointers to other data blocks][pointers to data blocks]
+    int double_indirect_block = get_free_block();
+    ip->i2block = double_indirect_block; //warning?
+    int a;
+    for(a = 0; a < 1024; ++a){
+      //create indirect block
+      int blockduo = get_free_block();
+      //address to write to = block size * block addr  + position *integer size
+      int addr2 = double_indirect_block*BLOCK_SZ+a*sizeof(int);
+      //call to write
+      rawdata[addr2] = blockduo;
+      for (j = 0; j < 1024; ++j){
         //gets a data block
         //puts the data block into the indirect block;
         int datablock = get_free_block();
-
-        ip->dblocks[i] = datablock; //new
-        
-        rawdata[blockno] = get_free_block();
-        for (k= (rawdata[blockno] * 1024); k < BLOCK_SZ + (rawdata[blockno] * 1024); ++k){
+        int addr = blockduo*BLOCK_SZ+j*sizeof(int);
+        rawdata[addr] = datablock;
+        for (k= (datablock * BLOCK_SZ); k < BLOCK_SZ + (datablock * BLOCK_SZ); ++k){
           if ((c = fgetc(fpr)) != '\0'){
             rawdata[k] = c;
           }
@@ -143,46 +135,38 @@ void place_file(char *file, int uid, int gid)
       }
     }
   }
-   }
 
   if (c != '\0'){
-  int triply_indirect_block = get_free_block();
-  ip->i3block = triply_indirect_block; //warning?
-  int b;
-  for(b = 0; b < 1024; ++b){
+    int triply_indirect_block = get_free_block();
+    ip->i3block = triply_indirect_block; //warning?
+    int b;
+    for(b = 0; b < 1024; ++b){
       int double_indirect = get_free_block();
-  ip->i2block = double_indirect;  //warning?
-  int a;
-  for(a = double_indirect * 1024; a < (double_indirect + 1024) + BLOCK_SZ; ++a){
-    //create doubly indirect block
-    int blockduo = get_free_block();
-    rawdata[a] = blockduo;
-    
-    for (i = double_indirect; i < double_indirect + BLOCK_SZ; ++i){
-      //creates the indirect block
-      int blockno = get_free_block();
-      ip->iblocks[i] = blockno;
-      //fills the indirect block with  data blocks
-      for (j = blockno * 1024 ; j < (BLOCK_SZ * blockno) + BLOCK_SZ; ++j){
-        //gets a data block
-        //puts the data block into the indirect block;
-        int datablock = get_free_block();
 
-        ip->dblocks[i] = datablock; //new
-        
-        rawdata[blockno] = get_free_block();
-        for (k= (rawdata[blockno] * 1024); k < BLOCK_SZ + (rawdata[blockno] * 1024); ++k){
-          if ((c = fgetc(fpr)) != '\0'){
-            rawdata[k] = c;
-          }
-          else{
-            break;
-          }
-        }
-      }
-    }
-  }
-   }
+      //address to write to = block size * block addr  + position *integer size
+      int addr = triply_indirect_block*BLOCK_SZ+b*sizeof(int);
+      //call to write
+      rawdata[addr] = double_indirect;
+
+      int a;
+      for(a = 0; a < 1024; ++a){
+        //create doubly indirect block
+        int blockduo = get_free_block();
+        //address to write to = block size * block addr  + position *integer size
+        int addr2 = double_indirect*BLOCK_SZ+a*sizeof(int);
+        //call to write
+        rawdata[addr2] = blockduo;
+        for (j = 0; j < 1024; ++j){
+          //gets a data block
+          //puts the data block into the indirect block;
+          int datablock = get_free_block();
+          int addr = blockduo*BLOCK_SZ+j*sizeof(int);
+
+          rawdata[addr] = datablock;
+          for (k= (datablock * BLOCK_SZ); k < BLOCK_SZ + (datablock * BLOCK_SZ); ++k){
+            if ((c = fgetc(fpr)) != '\0'){
+              rawdata[k] = c;
+            }
             else{
               break;
             }
@@ -191,8 +175,6 @@ void place_file(char *file, int uid, int gid)
       }
     }
   }
-  }
-
   ip->size = nbytes;  // total number of data bytes written for file
   printf("successfully wrote %d bytes of file %s\n", nbytes, file);
 }
@@ -220,19 +202,28 @@ struct inode * create(int argc, FILE *files, const char *argv[]){
 
   if (m > n){
       printf("%s \n", 
-          "this program will not work correctly."
+          "M > N, this program will not work correctly."
       );
-      return -1;
+      return NULL;
   }
-  if (d > m){
+  if (d >= m){
       printf(
-          "%s \n", "This program will not work correctly."
+          "D >= M, This program will not work correctly."
       );
-      return - 1;
+      return NULL;
   }
 
-  //check if I will fit in one block
-  int iv;
+  //check if I will fit the node list
+
+  //figure out size of list using sizeof
+  if (i >= (BLOCK_SZ/sizeof(struct inode))){
+      //printf("%s \n", "This program will not work correctly.");
+      printf("I > Block size, This program will not work correctly.");
+      return NULL;
+  }
+
+
+  
   FILE *outfile;
   
 
@@ -240,41 +231,27 @@ struct inode * create(int argc, FILE *files, const char *argv[]){
 
   // produce a disk image IMAGE_FILE of N total blocks of size 1024 bytes
   //(Disk image is an array of inodes (size N))
+  rawdata = malloc(n * BLOCK_SZ);
+  //set all blocks to 0
+  memset(&rawdata[iv], 0, n * BLOCK_SZ);
+  //make inode
+  struct inode *ip;
 
-  //including the first M blocks which will be used for inodes, sets all the contents to zero
-  //(size 1024 bytes)
-  for (iv = 0; iv < m; ++iv){
-      memset(&rawdata[iv], 0, 1024);
-  }
+  //call place file (reserve first m blocks for inodes)
+  place_file(fil,uid,gid,ip,m);
+
+  int iv;
   //make a new node
-  struct inode new_node;
-  //set new node with specified uid and gid
-  new_node.uid = uid;
-  new_node.gid = gid;
+
   
   //at position I (counting from 0) within that block
   for (iv = 0; iv < m ; ++iv){
       struct inode *new_node;
       rawdata[iv] = new_node;
   }
-  //placed in block D (counting from 0) within the disk image
-
-
-  //see if we need to use memset to turn set all of the relevent data to 0. 
-
-  //finding the start address of the inode d
-  uint64_t start_addr = (1024 * d) + &rawdata;
-  //i think (i * 1024) is wrong. 
-  struct inode * inode = &start_addr;
-
-  inode->uid = uid;
-  inode->gid = gid;
+  
 
   return inode;
-  //finds the file size
-  
-
-  
 
 }
 
@@ -297,7 +274,7 @@ void main(int argc, char *argv[]) // add argument handling
     int size = file_location->size;
   //finds the file we are trying to find
     uint64_t start_addr = (1024 * atoi(argv[15])) + &rawdata;
-    char *file_to_write[] =argv[9];
+    char *file_to_write = argv[9];
 
     char c = &file_to_write[0];
     int byte; 
