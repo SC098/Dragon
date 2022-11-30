@@ -35,7 +35,7 @@ void write_int(int pos, int val)
   *ptr = val;
 }
 
-void place_file(char *file, int uid, int gid, struct inode *ip, int m)
+void place_file(char *file, int uid, int gid, struct inode *ip)
 {
   int i, nbytes = 0;
   int i2block_index, i3block_index;
@@ -50,7 +50,6 @@ void place_file(char *file, int uid, int gid, struct inode *ip, int m)
   ip->mtime = random();
   ip->atime = random();
 
-  int blockInc = m*BLOCK_SZ;
 
   fpr = fopen(file, "rb");
   if (!fpr) {
@@ -65,6 +64,7 @@ void place_file(char *file, int uid, int gid, struct inode *ip, int m)
   for (i = 0; i < N_DBLOCKS; i++) {
     int blockno = get_free_block();
     ip->dblocks[i] = blockno; //new
+    //could use fread
     for (j= (blockno * BLOCK_SZ); j < BLOCK_SZ + (blockno * BLOCK_SZ); ++j){
       if ((c = fgetc(fpr)) != '\0'){
         //first m blocks reserved for inodes
@@ -233,25 +233,19 @@ struct inode * create(int argc, FILE *files, const char *argv[]){
   //(Disk image is an array of inodes (size N))
   rawdata = malloc(n * BLOCK_SZ);
   //set all blocks to 0
-  memset(&rawdata[iv], 0, n * BLOCK_SZ);
+  memset(&rawdata, 0, n * BLOCK_SZ);
   //make inode
   struct inode *ip;
 
   //call place file (reserve first m blocks for inodes)
-  place_file(fil,uid,gid,ip,m);
+  place_file(fil,uid,gid,ip);
 
-  int iv;
-  //make a new node
+  //set inode in dth position in ith inode in rawdata
 
-  
-  //at position I (counting from 0) within that block
-  for (iv = 0; iv < m ; ++iv){
-      struct inode *new_node;
-      rawdata[iv] = new_node;
-  }
+  rawdata[d*BLOCK_SZ+i] = ip;
   
 
-  return inode;
+  return ip;
 
 }
 
