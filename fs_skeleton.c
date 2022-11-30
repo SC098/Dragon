@@ -72,24 +72,27 @@ void place_file(char *file, int uid, int gid)
       else{
         break;
       }
+      if (c = '\0'){
+        break;
+      }
     }
   }
 
   int k;
+  if (c != '\0'){
   
   for (i = 0; i < N_IBLOCKS; ++i){
     //creates the indirect block
     int blockno = get_free_block();
     ip->iblocks[i] = blockno;
     //fills the indirect block with  data blocks
-    for (j = 0; j < BLOCK_SZ; ++j){
+    for (j = blockno * BLOCK_SZ; j < BLOCK_SZ + (blockno * 1024); ++j){
       //gets a data block
       //puts the data block into the indirect block;
       int datablock = get_free_block();
 
-      ip->dblocks[i] = datablock; //new
 
-      rawdata[blockno] = get_free_block();
+      rawdata[blockno] = datablock;
       for (k= (blockno * 1024); k < BLOCK_SZ + (blockno * 1024); ++k){
         if ((c = fgetc(fpr)) != '\0'){
           rawdata[k] = c;
@@ -100,27 +103,28 @@ void place_file(char *file, int uid, int gid)
       }
     }
   }
-    
+  }
     
   // fill in here
     
 
 
-   
+   if (c != '\0'){
   //double_indirect_block[pointers to other data blocks][pointers to data blocks]
-  int doubly_indirect_block[1024][1024];
-  ip->i2block = doubly_indirect_block;  //warning?
+  int double_indirect = get_free_block();
+  ip->i2block = double_indirect;  //warning?
   int a;
-  for(a = 0;a < 1024; ++a){
+  for(a = double_indirect * 1024; a < (double_indirect + 1024) + BLOCK_SZ; ++a){
     //create doubly indirect block
     int blockduo = get_free_block();
+    rawdata[a] = blockduo;
     
-    for (i = 0; i < N_IBLOCKS; ++i){
+    for (i = double_indirect; i < double_indirect + BLOCK_SZ; ++i){
       //creates the indirect block
       int blockno = get_free_block();
       ip->iblocks[i] = blockno;
       //fills the indirect block with  data blocks
-      for (j = 0; j < BLOCK_SZ; ++j){
+      for (j = blockno * 1024 ; j < (BLOCK_SZ * blockno) + BLOCK_SZ; ++j){
         //gets a data block
         //puts the data block into the indirect block;
         int datablock = get_free_block();
@@ -128,7 +132,7 @@ void place_file(char *file, int uid, int gid)
         ip->dblocks[i] = datablock; //new
         
         rawdata[blockno] = get_free_block();
-        for (k= (blockno * 1024); k < BLOCK_SZ + (blockno * 1024); ++k){
+        for (k= (rawdata[blockno] * 1024); k < BLOCK_SZ + (rawdata[blockno] * 1024); ++k){
           if ((c = fgetc(fpr)) != '\0'){
             rawdata[k] = c;
           }
@@ -139,37 +143,46 @@ void place_file(char *file, int uid, int gid)
       }
     }
   }
+   }
 
-
-  int triply_indirect_block[1024][1024][1024];
+  if (c != '\0'){
+  int triply_indirect_block = get_free_block();
   ip->i3block = triply_indirect_block; //warning?
   int b;
   for(b = 0; b < 1024; ++b){
-    //create triply indirect block
-    int blocktrio = get_free_block();
+      int double_indirect = get_free_block();
+  ip->i2block = double_indirect;  //warning?
+  int a;
+  for(a = double_indirect * 1024; a < (double_indirect + 1024) + BLOCK_SZ; ++a){
+    //create doubly indirect block
+    int blockduo = get_free_block();
+    rawdata[a] = blockduo;
+    
+    for (i = double_indirect; i < double_indirect + BLOCK_SZ; ++i){
+      //creates the indirect block
+      int blockno = get_free_block();
+      ip->iblocks[i] = blockno;
+      //fills the indirect block with  data blocks
+      for (j = blockno * 1024 ; j < (BLOCK_SZ * blockno) + BLOCK_SZ; ++j){
+        //gets a data block
+        //puts the data block into the indirect block;
+        int datablock = get_free_block();
 
-
-    for(a = 0;a < 1024; ++a){
-      //create doubly indirect block
-      int blockduo = get_free_block();
-      
-      for (i = 0; i < N_IBLOCKS; ++i){
-        //creates the indirect block
-        int blockno = get_free_block();
-        ip->iblocks[i] = blockno;
-        //fills the indirect block with  data blocks
-        for (j = 0; j < BLOCK_SZ; ++j){
-          //gets a data block
-          //puts the data block into the indirect block;
-          int datablock = get_free_block();
-
-          ip->dblocks[i] = datablock; //new
-          
-          rawdata[blockno] = get_free_block();
-          for (k= (blockno * 1024); k < BLOCK_SZ + (blockno * 1024); ++k){
-            if ((c = fgetc(fpr)) != '\0'){
-              rawdata[k] = c;
-            }
+        ip->dblocks[i] = datablock; //new
+        
+        rawdata[blockno] = get_free_block();
+        for (k= (rawdata[blockno] * 1024); k < BLOCK_SZ + (rawdata[blockno] * 1024); ++k){
+          if ((c = fgetc(fpr)) != '\0'){
+            rawdata[k] = c;
+          }
+          else{
+            break;
+          }
+        }
+      }
+    }
+  }
+   }
             else{
               break;
             }
@@ -178,7 +191,7 @@ void place_file(char *file, int uid, int gid)
       }
     }
   }
-
+  }
 
   ip->size = nbytes;  // total number of data bytes written for file
   printf("successfully wrote %d bytes of file %s\n", nbytes, file);
