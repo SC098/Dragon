@@ -7,7 +7,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # There is NO WARRANTY, to the extent permitted by law.
  
 
-# Make data base, printed on Mon Nov 28 13:57:16 2022
+# Make data base, printed on Tue Nov 29 20:35:36 2022
 
 # Variables
 
@@ -55,7 +55,7 @@ VSCODE_CWD = /u/sc3xry
 # environment
 KRB5CCNAME = KEYRING:persistent:2218260
 # environment
-SSH_CONNECTION = 172.25.145.56 59090 128.143.69.116 22
+SSH_CONNECTION = 64.203.139.114 62290 128.143.69.113 22
 # environment
 PATH = /u/sc3xry/.vscode-server/bin/6261075646f055b99068d3688932416f2346dd3b/bin/remote-cli:/sw/centos/slurm/current/bin:/sw/centos-7.4/Modules/5.0.1/bin:/usr/local/bin:/usr/bin:/opt/puppetlabs/bin:/usr/local/sbin:/usr/sbin:/u/sc3xry/bin
 # environment
@@ -73,7 +73,7 @@ SLURM_CONF = /etc/slurm/slurm.conf
 # environment
 PWD = /u/sc3xry/Dragon/Dragon
 # environment
-VSCODE_IPC_HOOK_CLI = /run/user/2218260/vscode-ipc-68278ee8-4e61-440d-9f00-5e95214527d5.sock
+VSCODE_IPC_HOOK_CLI = /run/user/2218260/vscode-ipc-6fc9735b-50ba-40dc-b7d8-bdac10e4d7ae.sock
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
@@ -95,7 +95,7 @@ VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # automatic
 ^D = $(patsubst %/,%,$(dir $^))
 # environment
-HOSTNAME = portal06
+HOSTNAME = portal03
 # environment
 MAKELEVEL := 0
 # default
@@ -107,7 +107,7 @@ SHLVL = 5
 # makefile (from `Makefile', line 4)
 AS = nasm
 # environment
-XDG_SESSION_ID = 67080
+XDG_SESSION_ID = 161428
 # environment
 USER = sc3xry
 # makefile
@@ -134,7 +134,7 @@ MAKEFLAGS = Rrqp
 # environment
 MFLAGS = -Rrqp
 # environment
-SSH_CLIENT = 172.25.145.56 59090 22
+SSH_CLIENT = 64.203.139.114 62290 22
 # environment
 MAIL = /var/spool/mail/sc3xry
 # environment
@@ -168,13 +168,13 @@ HISTSIZE = 1000
 # default
 .RECIPEPREFIX := 
 # makefile (from `Makefile', line 6)
-OBJECTS = disk_image.o fs_skeleton.o 
+OBJECTS = fs_skeleton.o 
 # makefile (from `Makefile', line 5)
 ASFlags = -f elf64 -g
 # environment
 LANG = C
 # variable set hash-table stats:
-# Load=77/1024=8%, Rehash=0, Collisions=7/99=7%
+# Load=77/1024=8%, Rehash=0, Collisions=7/102=7%
 
 # Pattern-specific Variable Values
 
@@ -182,7 +182,7 @@ LANG = C
 
 # Directories
 
-# . (device 51, inode 202616465): 9 files, no impossibilities.
+# . (device 46, inode 202616465): 9 files, no impossibilities.
 
 # 9 files, no impossibilities in 1 directories.
 
@@ -198,11 +198,31 @@ LANG = C
 #  Modification time never checked.
 #  File has not been updated.
 
-all: disk_image.o fs_skeleton.o
+all: fs_skeleton.o
 #  Command line target.
 #  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `'
 #  File does not exist.
-#  File has not been updated.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := all
+# automatic
+# % := 
+# automatic
+# * := 
+# automatic
+# + := fs_skeleton.o
+# automatic
+# | := 
+# automatic
+# < := fs_skeleton.o
+# automatic
+# ^ := fs_skeleton.o
+# automatic
+# ? := fs_skeleton.o
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=1/11=9%
 #  recipe to execute (from `Makefile', line 10):
 		gcc -g -Wall -o make_dragon *.c
 
@@ -220,7 +240,7 @@ all: disk_image.o fs_skeleton.o
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-11-17 16:48:48.752786469
+#  Last modified 2022-11-28 14:32:24.487183497
 #  File has been updated.
 #  Successfully updated.
 
@@ -269,6 +289,7 @@ dist:
 #  File has not been updated.
 
 .DELETE_ON_ERROR: 1
+ 
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -276,21 +297,12 @@ dist:
 # Not a target:
 fs_skeleton.o:
 #  Implicit rule search has been done.
-#  File does not exist.
-#  File has not been updated.
-
-# Not a target:
-disk_image.o:
-#  Implicit rule search has been done.
- 
-make: *** No rule to make target `fs_skeleton.o', needed by `all'.  Stop.
-
-#  Last modified 2022-11-17 18:01:39.177633948
+#  Last modified 2022-11-28 16:22:24.169093531
 #  File has been updated.
 #  Successfully updated.
 
 # files hash-table stats:
-# Load=14/1024=1%, Rehash=0, Collisions=0/33=0%
+# Load=13/1024=1%, Rehash=0, Collisions=0/32=0%
 # VPATH Search Paths
 
 # No `vpath' search paths.
@@ -299,11 +311,11 @@ make: *** No rule to make target `fs_skeleton.o', needed by `all'.  Stop.
 
 # # of strings in strcache: 0 / lookups = 38 / hits = 38
 # # of strcache buffers: 1 (* 8176 B/buffer = 8176 B)
-# strcache used: total = 0 (202) / max = 0 / min = 8176 / avg = 0
-# strcache free: total = 0 (7974) / max = 0 / min = 8176 / avg = 0
+# strcache used: total = 0 (188) / max = 0 / min = 8176 / avg = 0
+# strcache free: total = 0 (7988) / max = 0 / min = 8176 / avg = 0
 
 # strcache hash-table stats:
-# Load=23/8192=0%, Rehash=0, Collisions=1/38=3%
-# Finished Make data base on Mon Nov 28 13:57:16 2022
+# Load=22/8192=0%, Rehash=0, Collisions=1/38=3%
+# Finished Make data base on Tue Nov 29 20:35:36 2022
 
  
