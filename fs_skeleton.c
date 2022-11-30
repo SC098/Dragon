@@ -38,9 +38,9 @@ void write_int(int pos, int val)
 void place_file(char *file, int uid, int gid, struct inode *ip)
 {
   int i, nbytes = 0;
-  int i2block_index, i3block_index;
+  //int i2block_index, i3block_index;
   FILE *fpr;
-  unsigned char buf[BLOCK_SZ];
+  //unsigned char buf[BLOCK_SZ];
 
   ip->mode = 0;
   ip->nlink = 1;
@@ -185,7 +185,7 @@ struct inode * create(int argc, FILE *files, const char *argv[]){
       printf("%s \n", 
           "Incorrect number of, this program will not work correctly."
       );
-      return;
+      return NULL;
   }
   int n = atoi(argv[5]);
   //fill 5 in with size of file
@@ -223,10 +223,6 @@ struct inode * create(int argc, FILE *files, const char *argv[]){
   }
 
 
-  
-  FILE *outfile;
-  
-
 
 
   // produce a disk image IMAGE_FILE of N total blocks of size 1024 bytes
@@ -235,10 +231,10 @@ struct inode * create(int argc, FILE *files, const char *argv[]){
   //set all blocks to 0
   memset(&rawdata, 0, n * BLOCK_SZ);
   //make inode
-  struct inode *ip;
+  struct inode *ip = malloc(sizeof(*ip));
 
   //call place file (reserve first m blocks for inodes)
-  place_file(fil,uid,gid,ip);
+  place_file(*fil,uid,gid,ip); ////////////////////////////////////////////////////////////////////?
 
   //set inode in dth position in ith inode in rawdata
 
@@ -249,7 +245,8 @@ struct inode * create(int argc, FILE *files, const char *argv[]){
 
 }
 
-void main(int argc, char *argv[]) // add argument handling
+//const?????
+void main(int argc, const char *argv[]) // add argument handling 
 {
   int i;
   FILE *outfile;
