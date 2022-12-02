@@ -66,11 +66,11 @@ void place_file(char * file, int uid, int gid, struct inode * ip) {
     int blockno = get_free_block();
     ip -> dblocks[i] = blockno; //new
     //could use fread
-    for (j = (blockno * BLOCK_SZ); j < BLOCK_SZ + (blockno * BLOCK_SZ); ++j) {
+    for (j = 0; j < BLOCK_SZ ; ++j) {
       if ((c = fgetc(fpr)) != '\0') {
         //first m blocks reserved for inodes
-        rawdata[j] = c;
-        //write_int(j, c);
+        //rawdata[j] = c;
+        write_int((blockno*BLOCK_SZ) + j, c);
         ++nbytes;
       } else {
         break;
@@ -95,8 +95,8 @@ void place_file(char * file, int uid, int gid, struct inode * ip) {
         write_int(addr, datablock);
         for (k = (datablock * BLOCK_SZ); k < BLOCK_SZ + (datablock * BLOCK_SZ); ++k) {
           if ((c = fgetc(fpr)) != '\0') {
-            rawdata[k] = c;
-            //write_int(k, c);
+            //rawdata[k] = c;
+            write_int(k, c);
             ++nbytes;
           } else {
             break;
@@ -130,8 +130,8 @@ void place_file(char * file, int uid, int gid, struct inode * ip) {
         write_int(addr, datablock);
         for (k = (datablock * BLOCK_SZ); k < BLOCK_SZ + (datablock * BLOCK_SZ); ++k) {
           if ((c = fgetc(fpr)) != '\0') {
-            rawdata[k] = c;
-            //write_int(k, c);
+            //rawdata[k] = c;
+            write_int(k, c);
             ++nbytes;
           } else {
             break;
@@ -173,8 +173,8 @@ void place_file(char * file, int uid, int gid, struct inode * ip) {
           write_int(addr, datablock);
           for (k = (datablock * BLOCK_SZ); k < BLOCK_SZ + (datablock * BLOCK_SZ); ++k) {
             if ((c = fgetc(fpr)) != '\0') {
-              rawdata[k] = c;
-              //write_int(k, c);
+              //rawdata[k] = c;
+              write_int(k, c);
               ++nbytes;
             } else {
               break;
@@ -203,8 +203,6 @@ struct inode * create(int argc,
   int m = atoi(argv[7]);
   //fill in 5 with length of file
   //char (*fil)[5] = argv[9];
-  char * fil[100];
-  memcpy( * fil, argv[9], 100);
   int uid = atoi(argv[11]);
   int gid = atoi(argv[13]);
   int d = atoi(argv[15]);
@@ -245,7 +243,7 @@ struct inode * create(int argc,
   struct inode * ip = malloc(sizeof( * ip));
 
   //call place file (reserve first m blocks for inodes)
-  place_file( * fil, uid, gid, ip); ////////////////////////////////////////////////////////////////////?
+  place_file( argv[9], uid, gid, ip); 
 
   //set inode in dth position in ith inode in rawdata
 
@@ -470,7 +468,7 @@ void main(int argc,
 
   // fill in here to place file 
 
-  if (strcmp("-create", argv[1])) {
+  if (strcmp("-create", argv[1]) == 0) {
     struct inode * file_location = create(argc, argv);
     fwrite(rawdata, sizeof(char), sizeof(rawdata), outfile);
     /**
@@ -485,13 +483,13 @@ void main(int argc,
     //keeps track of the char we are currently at    
     **/
   }
-  if (strcmp("-insert", argv[1])) {
+  if (strcmp("-insert", argv[1]) == 0) {
     read_existing_disk_image(outfile);
     insert(argc, argv);
     fwrite(rawdata, sizeof(char), sizeof(rawdata), outfile);
 
   }
-  if (strcmp("-extract", argv[1])) {
+  if (strcmp("-extract", argv[1]) == 0) {
     extract(argc, argv);
     get_unused_blocks();
   }
