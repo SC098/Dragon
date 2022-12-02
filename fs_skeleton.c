@@ -344,6 +344,24 @@ void insert(int argc, const char *argv[]){
 }
 
 void extract(int argc, const char *argv[]){
+  int i = 0;
+  int inode;
+
+  FILE * input = fopen(argv[3], 'r');
+  read_existing_disk_image(input);
+  for (i=0; i < TOTAL_BLOCKS; ++i){
+    //block is occupied
+    struct inode * curr_inode;
+    for (inode = 0; inode < BLOCK_SZ; inode += sizeof(inode)){
+      curr_inode = &rawdata[(BLOCK_SZ * i) + inode];
+      if (curr_inode->uid == argv[5] &&
+          curr_inode->gid == argv[7]){
+            //found the correct inode;
+            printf('file found at inode in block' + i  + ', file size' + curr_inode->size);
+          }
+    }
+  }
+
 
 }
 
